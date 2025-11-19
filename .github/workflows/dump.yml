@@ -31,10 +31,13 @@ jobs:
       - name: Build
         run: npx tsc
 
-      - name: Análise com SonarCloud (Opcional - Mantive do seu anterior)
+      - name: Análise com SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Clean Sonar temp folder
+        run: rm -rf .scannerwork
 
       - name: Criar Release Pull Request ou Publicar no NPM
         uses: changesets/action@v1
