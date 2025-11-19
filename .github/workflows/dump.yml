@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write # Necessário para o Changesets criar o PR de versão
-      id-token: write      # Necessário para autenticação
+      pull-requests: write 
+      id-token: write      
 
     steps:
       - name: Checkout
@@ -36,16 +36,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      # 🌟 A MÁGICA ACONTECE AQUI
       - name: Criar Release Pull Request ou Publicar no NPM
         uses: changesets/action@v1
         with:
-          # Este comando roda quando há mudanças acumuladas. Ele cria um PR chamado "Version Packages"
           version: npm run version-packages 
-          # Este comando roda quando o PR de versão é mergeado na main
           publish: npm publish
         env:
-          # Token do GitHub para criar o PR e tags
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Token do NPM para publicar o pacote
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
